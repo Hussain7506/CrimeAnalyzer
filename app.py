@@ -4,8 +4,8 @@ import torch
 from datetime import time  # Import the time class
 
 # Load the trained model and tokenizer
-model = DistilBertForSequenceClassification.from_pretrained('C:/Users/ujjai/my_saved_model')
-tokenizer = DistilBertTokenizerFast.from_pretrained('C:/Users/ujjai/my_saved_model')
+model = DistilBertForSequenceClassification.from_pretrained('./my_saved_model')
+tokenizer = DistilBertTokenizerFast.from_pretrained('./my_saved_model')
 
 # Label encoder to map class IDs back to class names (crime descriptions)
 crime_classes = ['BATTERY - SIMPLE ASSAULT', 'BURGLARY', 'BURGLARY FROM VEHICLE', 'THEFT PLAIN - PETTY ($950 & UNDER)', 'VEHICLE - STOLEN']
