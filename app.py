@@ -38,3 +38,35 @@ if st.button('Predict Crime Class'):
     st.write("Crime Class Probabilities:")
     for crime_class, prob in zip(crime_classes, probabilities):
         st.write(f"{crime_class}: {prob * 100:.2f}%")
+
+crime_data = pd.read_csv("./CRIMEDATA2010to2023")
+top_5_crimes = crime_data['CrmCdDesc'].value_counts().nlargest(5).index
+
+# Filter the dataset to only include these top 5 crimes
+top_5_crime_data = crime_data[crime_data['CrmCdDesc'].isin(top_5_crimes)]
+top_5_crime_data = top_5_crime_data.reset_index(drop=True)
+
+crime_colors = {
+    'BATTERY - SIMPLE ASSAULT': 'blue',
+    'BURGLARY': 'green',
+    'THEFT PLAIN - PETTY ($950 & UNDER)': 'orange',
+    'VEHICLE - STOLEN': 'red',
+    'BURGLARY FROM VEHICLE': 'purple'
+}
+
+# Initialize the map centered around the average location
+map_center = [top_5_crime_data['latitude'].mean(), top_5_crime_data['longitude'].mean()]
+crime_map = folium.Map(location=map_center, zoom_start=12)
+
+# Add markers to the map
+for idx, row in top_5_crime_data.iterrows():
+    folium.Marker(
+        location=[row['latitude'], row['longitude']],
+        popup=row['crime_type'],
+        icon=folium.Icon(color=crime_colors.get(row['crime_type'], 'gray'))
+    ).add_to(crime_map)
+
+# Display the map in Streamlit
+st.title("Interactive Crime Map")
+st.write("This map shows crime-prone areas with different markers based on crime type.")
+st_folium(crime_map, width=700, height=500)
