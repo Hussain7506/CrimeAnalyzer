@@ -39,7 +39,7 @@ if st.button('Predict Crime Class'):
     for crime_class, prob in zip(crime_classes, probabilities):
         st.write(f"{crime_class}: {prob * 100:.2f}%")
 
-crime_data = pd.read_csv("./CRIMEDATA2010to2023")
+crime_data = pandas.read_csv("./CRIMEDATA2010to2023")
 top_5_crimes = crime_data['CrmCdDesc'].value_counts().nlargest(5).index
 
 # Filter the dataset to only include these top 5 crimes
